@@ -20,9 +20,13 @@ built on [neoan3](http://neoan3.rocks/getting-started/)
 ## Installation
 
 
-_via fork or download_
+_via git clone_
 
-`clone `
+`git clone https://github.com/sroehrl/startpage.git`
+
+_via download_
+
+[download](https://github.com/sroehrl/startpage/archive/master.zip)
 
 (You might have to adjust the .htaccess file depending on your system)
 
