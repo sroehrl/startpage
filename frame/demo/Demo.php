@@ -21,7 +21,7 @@ class Demo extends Serve
                     'sizes' => '32x32',
                     'type' => 'image/png',
                     'rel' => 'icon',
-                    'href' => 'asset/neoan-favicon.png'
+                    'href' => 'https://neoan.us/asset/neoan-favicon.png'
                 ]
             ],
             'stylesheet' => [
