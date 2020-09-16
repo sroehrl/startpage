@@ -1,6 +1,8 @@
 # startpage
+[![Build Status](https://travis-ci.com/sroehrl/startpage.svg?branch=master)](https://travis-ci.com/sroehrl/startpage)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/e39259dfb6b99a75c236/test_coverage)](https://codeclimate.com/github/sroehrl/startpage/test_coverage)
 
-Dead simple startpage project
+Dead simple startpage project 
 
 ![img](./asset/Capture.PNG)
 
@@ -31,6 +33,18 @@ _via download_
 (You might have to adjust the .htaccess file depending on your system)
 
 
+## Test/Develop
+
+`composer global require neoan3/neoan3`
+
+`neoan3 develop` or `neoan3 test`
+
+## Deploy
+
+Package can be deployed as-is. The only modification required is the RewriteBase in ".htaccess"
+
+## License
+
 MIT license [opensource](https://opensource.org/licenses/MIT)
 
 Copyright 2020 [neoan](http://neoan.us) (Stefan Roehrl) 
@@ -41,9 +55,4 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# What is neoan3?
 
-Neoan3 is a complete rewrite of [neoanPHP](https://github.com/sroehrl/neoanPHP) and modernizes the approach greatly.
-This version is in its infancy and not intended for production-projects yet.
-
-However, I enjoy comments, contributions & critique.
