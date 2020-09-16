@@ -43,7 +43,7 @@ _via download_
 ## Deploy
 
 Package can be deployed as-is. The only modification required is the RewriteBase in ".htaccess"
-
+and changing the Azure client ID to your app. ("component/home/home.ctrl.js")
 ## License
 
 MIT license [opensource](https://opensource.org/licenses/MIT)
