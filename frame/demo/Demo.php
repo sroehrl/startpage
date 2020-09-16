@@ -33,7 +33,7 @@ class Demo extends Serve
 //                ['src' => base . 'node_modules/alpinejs/dist/alpine.js'],
                 ['src' => 'https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.min.js'],
 //                ['src' => base . 'node_modules/axios/dist/axios.js'],
-                ['src' => 'https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.min.js'],
+                ['src' => 'https://cdn.jsdelivr.net/npm/axios@0.20.0/dist/axios.min.js'],
                 ['src' => 'https://alcdn.msauth.net/browser/2.1.0/js/msal-browser.min.js'],
             ]
         ];
