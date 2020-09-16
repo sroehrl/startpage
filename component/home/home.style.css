@@ -1,0 +1,49 @@
+.page {
+    background-size: cover;
+    min-height: 100vh;
+}
+
+.down-100 {
+    padding-top: 100px;
+}
+
+.bg-light {
+    background: rgba(255, 255, 255, .8);
+}
+
+.checkbox input {
+    visibility: hidden;
+}
+
+.checked {
+    position: relative;
+}
+
+.checked:after {
+    position: absolute;
+    content: "✔️";
+    left: 3px;
+    top: 1px;
+}
+
+.image-author {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.clock {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.top-right {
+    top: 8px;
+    right: 8px;
+    cursor: pointer;
+}
+.list-container{
+    max-height: 300px;
+    overflow-y: auto;
+}

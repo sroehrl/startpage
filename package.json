@@ -1,0 +1,27 @@
+{
+  "name": "startpage",
+  "version": "1.0.0",
+  "description": "neoan3-startpage",
+  "main": "index.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "https://github.com/sroehrl/startpage",
+  "keywords": [
+    "neoan3",
+    "custom-element",
+    "php"
+  ],
+  "author": "Stefan Roehrl",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sroehrl/neoan3/issues"
+  },
+  "homepage": "https://github.com/sroehrl/neoan3#readme",
+  "dependencies": {
+    "alpinejs": "^2.7.0",
+    "axios": "^0.20.0",
+    "normalizecss": "^3.0.0"
+  },
+  "private": false
+}
