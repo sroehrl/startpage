@@ -30,8 +30,10 @@ class Demo extends Serve
                 'https://cdn.jsdelivr.net/npm/gaudiamus-css@1.1.0/css/gaudiamus.min.css',
             ],
             'js' => [
-                ['src' => base . 'node_modules/alpinejs/dist/alpine.js'],
-                ['src' => base . 'node_modules/axios/dist/axios.js'],
+//                ['src' => base . 'node_modules/alpinejs/dist/alpine.js'],
+                ['src' => 'https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.min.js'],
+//                ['src' => base . 'node_modules/axios/dist/axios.js'],
+                ['src' => 'https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.min.js'],
                 ['src' => 'https://alcdn.msauth.net/browser/2.1.0/js/msal-browser.min.js'],
             ]
         ];
