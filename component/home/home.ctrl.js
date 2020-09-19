@@ -19,31 +19,40 @@ function startpage() {
                 this.data.username = account[0].username;
                 await this.authenticate();
                 await this.loadCalendar();
+                this.data.reauthenticate = false;
             } catch (error) {
                 console.log(error);
             }
             this.save();
         },
         async authenticate() {
-            try {
-                let account = await this.msClient.getAllAccounts();
-                let tokenResponse = await this.msClient.acquireTokenSilent({
-                    scopes: this.msOptions.scopes,
-                    account: account[0],
-                    forceRefresh: false
-                });
-                console.log(tokenResponse)
-                this.data.accessToken = tokenResponse.accessToken;
-                this.data.refreshToken = tokenResponse.refreshToken;
-                return true;
-            } catch (error) {
-                if (error instanceof msal.InteractionRequiredAuthError) {
-                    // fallback to interaction when silent call fails
-                    this.options.loginHint = this.data.username;
-                    await this.msClient.acquireTokenPopup(options);
+            let account = await this.msClient.getAllAccounts();
+            if(account.length<1){
+                let trigger = confirm('Reauthentication required');
+                if(trigger){
+                    this.data.reauthenticate = true;
+                }
+            } else {
+                try {
+
+                    let tokenResponse = await this.msClient.acquireTokenSilent({
+                        scopes: this.msOptions.scopes,
+                        account: account[0],
+                        forceRefresh: false
+                    });
+                    console.log(tokenResponse)
+                    this.data.accessToken = tokenResponse.accessToken;
+                    this.data.refreshToken = tokenResponse.refreshToken;
+                    return true;
+                } catch (error) {
+                    console.log(error)
+                    if (error instanceof msal.InteractionRequiredAuthError) {
+                        // fallback to interaction when silent call fails
+                        this.options.loginHint = this.data.username;
+                        await this.msClient.acquireTokenPopup(options);
+                    }
                 }
             }
-
         },
         data: {
             todo: [{todo: 'Buy more RAM', done: false}],
@@ -56,7 +65,8 @@ function startpage() {
             background: 0,
             time: false,
             accessToken: null,
-            events: []
+            events: [],
+            reauthenticate:false
         },
         async init() {
 

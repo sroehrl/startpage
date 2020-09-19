@@ -78,7 +78,7 @@
                     <p x-text="event.bodyPreview" class="font-sm"></p>
                 </div>
             </template>
-            <button x-show="!data.username" x-on:click="login" class="b-rounded b-1 b-primary text-white bg-primary p-x-4 p-y-2">Login to outlook.com</button>
+            <button x-show="!data.username||data.reauthenticate" x-on:click="login" class="b-rounded b-1 b-primary text-white bg-primary p-x-4 p-y-2">Login to outlook.com</button>
         </div>
     </div>
 
