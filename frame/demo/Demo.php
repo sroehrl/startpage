@@ -28,6 +28,7 @@ class Demo extends Serve
                 '' . base . 'frame/demo/demo.css',
                 '' . base . 'node_modules/normalizecss/normalize.css',
                 'https://cdn.jsdelivr.net/npm/gaudiamus-css@1.1.0/css/gaudiamus.min.css',
+                'https://fonts.googleapis.com/icon?family=Material+Icons',
             ],
             'js' => [
 //                ['src' => base . 'node_modules/alpinejs/dist/alpine.js'],

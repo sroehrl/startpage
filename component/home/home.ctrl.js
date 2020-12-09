@@ -40,16 +40,14 @@ function startpage() {
                         account: account[0],
                         forceRefresh: false
                     });
-                    console.log(tokenResponse)
                     this.data.accessToken = tokenResponse.accessToken;
                     this.data.refreshToken = tokenResponse.refreshToken;
                     return true;
                 } catch (error) {
-                    console.log(error)
                     if (error instanceof msal.InteractionRequiredAuthError) {
                         // fallback to interaction when silent call fails
-                        this.options.loginHint = this.data.username;
-                        await this.msClient.acquireTokenPopup(options);
+                        this.msOptions.loginHint = this.data.username;
+                        await this.msClient.acquireTokenPopup(this.msOptions);
                     }
                 }
             }
@@ -66,7 +64,8 @@ function startpage() {
             time: false,
             accessToken: null,
             events: [],
-            reauthenticate:false
+            reauthenticate:false,
+            expanded:false
         },
         async init() {
 
@@ -84,13 +83,13 @@ function startpage() {
 
             this.getTime()
             setInterval(() => this.getTime(), 10000);
-            console.log(this.data)
         },
         save() {
             localStorage.setItem('startpage', JSON.stringify(this.data))
         },
         add(item, type) {
             this.data[type].push(item);
+            this.data.expanded = true;
         },
         removeBookmark(bm) {
             this.data.bookmarks = this.data.bookmarks.filter(item => item.url !== bm.url)
@@ -127,6 +126,7 @@ function startpage() {
             {url: 'asset/pexels-felix-mittermeier-957933.jpg', author: 'Felix Mittermeier'},
             {url: 'asset/pexels-eberhard-grossgasteiger-443446.jpg', author: 'eberhard grossgasteiger'},
             {url: 'asset/pexels-pixabay-219692.jpg', author: 'PIXABAY'},
+            {url: 'asset/pexels-pixabay-459225.jpg', author: 'PIXABAY'},
         ],
         changeBackground(ev) {
             ev.preventDefault();
@@ -139,6 +139,9 @@ function startpage() {
         getTime() {
             let ima = new Date();
             this.data.time = ima.getHours().toString().padStart(2, '0') + ':' + ima.getMinutes().toString().padStart(2, '0');
+        },
+        parseLinks(raw){
+          return raw.replace(/^https:\/\/[^\s]+/img, hit => `<a href="${hit}" target="_blank">${hit}</a>` )
         },
         convertToLocalTime(input) {
 
@@ -172,10 +175,8 @@ function startpage() {
 
                 })
             } catch (e){
-                console.log(e.response)
                 if(e.response.statusText === 'Unauthorized'){
                     const reauth = await this.authenticate();
-                    console.log(reauth);
                     if(reauth){
                         this.loadCalendar();
                     }
