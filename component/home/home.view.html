@@ -1,16 +1,14 @@
 <section class="page" x-data="startpage()" x-init="init()"
          x-bind:style="'background-image:url('+background[data.background].url+')'">
-    <div class="image-author text-white p-3 ">
-        <a title="change background" href="#" x-on:click="changeBackground">🖱️</a>
-        <span x-text="'Image by '+background[data.background].author "></span>
-        <a href="https://pexels.com" class="text-white">pexels.com</a>
-    </div>
+    <button class="b-rounded b-0 bg-gray m-2 text-white" x-on:click="data.expanded =! data.expanded">
+        <span class="material-icons">aspect_ratio</span>
+    </button>
     <div class="clock text-white p-3 font-xxl" x-text="data.time"></div>
     <div class="container" x-show="data.time">
         <div class="grid-12 md:grid-6-6 down-100">
             <div class="b-rounded bg-light p-4 m-4 raise-1-primary position-relative">
-                <h3 class="text-primary font-lg">Todo </h3>
-                <span class="font-md pointer position-absolute top-right" x-on:click="data.showNewTodo =! data.showNewTodo">⚙️</span>
+                <h3 class="text-primary font-lg">Todo (<span x-text="data.todo.length"></span>)</h3>
+                <span class="font-md pointer position-absolute top-right material-icons" x-on:click="data.showNewTodo =! data.showNewTodo">unfold_more</span>
                 <form x-on:submit="addTodo" class="m-b-3" x-show="data.showNewTodo">
                     <input x-model="data.newTodo" type="text" placeholder="add todo"
                            class="b-rounded b-1 b-primary p-x-4 p-y-2 bg-transparent">
@@ -22,7 +20,7 @@
                         clear
                     </button>
                 </form>
-                <div class="list-container ">
+                <div class="list-container " x-show="data.expanded">
                     <template x-for="todo in data.todo">
                         <div class="grid-9-3 p-y-3">
                             <strong class="text-black" x-text="todo.todo"></strong>
@@ -40,7 +38,7 @@
             </div>
             <div class="b-rounded bg-light p-4 m-4 raise-1-primary position-relative">
                 <h3 class="text-primary font-lg">Quick access</h3>
-                <span class="font-md pointer position-absolute top-right" x-on:click="data.showNewBookmark =! data.showNewBookmark">⚙️</span>
+                <span class="font-md pointer position-absolute top-right material-icons" x-on:click="data.showNewBookmark =! data.showNewBookmark">unfold_more</span>
                 <form x-on:submit="addBookmark" class="m-b-3" x-show="data.showNewBookmark">
                     <div class="grid-5-5-2">
                         <input x-model="data.newBookmark" type="url" placeholder="add url"
@@ -57,7 +55,7 @@
 
 
                 </form>
-                <div class="list-container ">
+                <div class="list-container " x-show="data.expanded">
                     <template x-for="bookmark in data.bookmarks">
                         <div class="grid-9-3 p-y-3">
                             <a x-bind:href="bookmark.url" class="text-decoration-none text-primary" target="_blank" x-text="bookmark.title"></a>
@@ -69,19 +67,24 @@
 
             </div>
         </div>
-        <div class="calendar b-rounded bg-light p-4 m-4 raise-1-primary">
+        <div class="calendar b-rounded bg-light p-4 m-4 raise-1-primary m-b-5">
             <h3 class="text-primary font-lg">Upcoming</h3>
             <template x-for="event in data.events">
                 <div class="grid-3-3-6">
                     <p x-text="convertToLocalTime(event.start.dateTime)"></p>
                     <p><a class="text-decoration-none text-primary" x-bind:href="event.webLink" target="_blank" x-text="event.subject"></a></p>
-                    <p x-text="event.bodyPreview" class="font-sm"></p>
+<!--                    <p x-html="event.body.content" class="font-sm"></p>-->
+                    <p x-html="parseLinks(event.bodyPreview)" class="font-sm"></p>
                 </div>
             </template>
-            <button x-show="!data.username" x-on:click="login" class="b-rounded b-1 b-primary text-white bg-primary p-x-4 p-y-2">Login to outlook.com</button>
+            <button x-show="!data.username||data.reauthenticate" x-on:click="login" class="b-rounded b-1 b-primary text-white bg-primary p-x-4 p-y-2">Login to outlook.com</button>
         </div>
     </div>
-
+    <div class="text-white p-3 ">
+        <a title="change background" href="#" x-on:click="changeBackground">🖱️</a>
+        <span x-text="'Image by '+background[data.background].author "></span>
+        <a href="https://pexels.com" class="text-white">pexels.com</a>
+    </div>
 </section>
 <script>
 
