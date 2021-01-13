@@ -6,11 +6,13 @@ const msalConfig = {
 };
 let now = new Date();
 
+const baseURL = 'https://graph.microsoft.com/v1.0/me/calendars';
+
 function startpage() {
     return {
         msClient: null,
         msOptions: {
-            scopes: ["user.read", "calendars.read.shared"]
+            scopes: ["user.read", "calendars.read.shared", "calendars.readWrite", "openid","profile"]
         },
         async login() {
             try {
@@ -52,6 +54,7 @@ function startpage() {
                 }
             }
         },
+
         data: {
             todo: [{todo: 'Buy more RAM', done: false}],
             bookmarks: [{url: 'https://neoan3.rocks', title: 'neoan3 docs'}],
@@ -59,11 +62,16 @@ function startpage() {
             showNewTodo: false,
             showNewBookmark: false,
             newBookmark: '',
+            showNewEvent: false,
+            newEvent:{
+                name:''
+            },
             newBookmarkTitle: '',
             background: 0,
             time: false,
             accessToken: null,
             events: [],
+            calendars:[],
             reauthenticate:false,
             expanded:false
         },
@@ -150,21 +158,56 @@ function startpage() {
 
 
         },
+        msHeader(){
+            return {
+                headers: {
+                    Authorization: 'Bearer ' + this.data.accessToken
+                }
+            }
+        },
+        async writeCalendar(){
+            let endTime = new Date(this.data.newEvent.start);
+            endTime.setHours(endTime.getHours() + Number(this.data.newEvent.duration));
+
+
+            const event = {
+                subject: this.data.newEvent.name,
+                body: {
+                    contentType:'HTML',
+                    content: this.data.newEvent.content
+                },
+                start: {
+                    dateTime: this.data.newEvent.start,
+                    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                },
+                end: {
+                    dateTime: endTime.toISOString().replace(/\.\d{3}[^$]*/,''),
+                    timeZone: 'Greenwich Standard Time'
+                    // timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                }
+            }
+
+            await axios.post(`https://graph.microsoft.com/v1.0/me/calendar/events`, event, this.msHeader());
+            this.data.newEvent = {
+                name: '',
+                duration: .5,
+            }
+            this.data.showNewEvent = false;
+            this.save();
+            return this.loadCalendar();
+        },
         async loadCalendar() {
 
             let start = new Date(now.getTime() - (6 * 60 * 60 * 1000));
             let end = new Date(now.getTime() + (36 * 60 * 60 * 1000))
-            let options = {
-                headers: {
-                    Authorization: 'Bearer ' + this.data.accessToken
-                }
-            };
-            let baseURL = 'https://graph.microsoft.com/v1.0/me/calendars';
+
             try{
-                const {data} = await axios.get(baseURL, options);
+                const {data} = await axios.get(baseURL, this.msHeader());
+                this.data.calendars = data.value;
+                console.log(data.value)
                 this.data.events = [];
                 data.value.forEach(calendar => {
-                    axios.get(`${baseURL}/${calendar.id}/calendarView?StartDateTime=${start.toISOString()}&EndDateTime=${end.toISOString()}`, options)
+                    axios.get(`${baseURL}/${calendar.id}/calendarView?StartDateTime=${start.toISOString()}&EndDateTime=${end.toISOString()}`, this.msHeader())
                         .then(single => {
                             this.data.events = [...this.data.events, ...single.data.value];
                             this.data.events.sort((a, b) => new Date(a.start.dateTime).getTime() < new Date(b.start.dateTime).getTime() ? -1 : 1)
