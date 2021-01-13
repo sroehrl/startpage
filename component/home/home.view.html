@@ -50,10 +50,7 @@
                                 add
                             </button>
                         </div>
-
                     </div>
-
-
                 </form>
                 <div class="list-container " x-show="data.expanded">
                     <template x-for="bookmark in data.bookmarks">
@@ -67,13 +64,42 @@
 
             </div>
         </div>
-        <div class="calendar b-rounded bg-light p-4 m-4 raise-1-primary m-b-5">
+        <div class="calendar b-rounded bg-light p-4 m-4 raise-1-primary m-b-5 position-relative">
             <h3 class="text-primary font-lg">Upcoming</h3>
+            <span class="font-md pointer position-absolute top-right material-icons" x-on:click="data.showNewEvent =! data.showNewEvent; data.newEvent = {duration:.5}">add</span>
+            <template x-if="data.showNewEvent">
+                <form x-on:submit.prevent="writeCalendar" class="m-b-3">
+                    <div class="grid-5-5-2">
+                        <input required x-model="data.newEvent.name" type="text" placeholder="title"
+                               class="b-rounded b-1 b-primary p-x-4 p-y-2 m-r-2 bg-transparent">
+                        <input required x-model="data.newEvent.start" type="datetime-local" placeholder="when"
+                               class="b-rounded b-1 b-primary p-x-4 p-y-2 m-r-2 bg-transparent">
+                        <select required x-model="data.newEvent.duration" name="b-rounded b-1 b-primary p-x-4 p-y-2 m-r-2 bg-transparent" >
+                            <option disabled selected value="0">choose</option>
+                            <option value=".5">30 min</option>
+                            <option value="1">1 h</option>
+                            <option value="1.5">1 h 30 min</option>
+                            <option value="2">2 h</option>
+                            <option value="3">3 h</option>
+                        </select>
+                        <textarea x-model="data.newEvent.content"
+                                  class="b-rounded b-1 b-primary p-x-4 p-y-2 m-r-2 bg-transparent">
+
+                        </textarea>
+                        <span></span>
+                        <div class="place-x-end place-y-center">
+                            <button type="submit" class="b-rounded b-1 b-primary text-white bg-primary p-x-4 p-y-2">
+                                add
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </template>
+
             <template x-for="event in data.events">
                 <div class="grid-3-3-6">
-                    <p x-text="convertToLocalTime(event.start.dateTime)"></p>
+                    <p x-text="event.isAllDay ? convertToLocalDay(event.start.dateTime) + ' all day' :  convertToLocalTime(event.start.dateTime)"></p>
                     <p><a class="text-decoration-none text-primary" x-bind:href="event.webLink" target="_blank" x-text="event.subject"></a></p>
-<!--                    <p x-html="event.body.content" class="font-sm"></p>-->
                     <p x-html="parseLinks(event.bodyPreview)" class="font-sm"></p>
                 </div>
             </template>
