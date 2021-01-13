@@ -98,9 +98,8 @@
 
             <template x-for="event in data.events">
                 <div class="grid-3-3-6">
-                    <p x-text="convertToLocalTime(event.start.dateTime)"></p>
+                    <p x-text="event.isAllDay ? convertToLocalDay(event.start.dateTime) + ' all day' :  convertToLocalTime(event.start.dateTime)"></p>
                     <p><a class="text-decoration-none text-primary" x-bind:href="event.webLink" target="_blank" x-text="event.subject"></a></p>
-<!--                    <p x-html="event.body.content" class="font-sm"></p>-->
                     <p x-html="parseLinks(event.bodyPreview)" class="font-sm"></p>
                 </div>
             </template>

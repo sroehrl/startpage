@@ -151,12 +151,12 @@ function startpage() {
         parseLinks(raw){
           return raw.replace(/^https:\/\/[^\s]+/img, hit => `<a href="${hit}" target="_blank">${hit}</a>` )
         },
+        convertToLocalDay(input){
+            return this.convertToLocalTime(input).substring(0,5);
+        },
         convertToLocalTime(input) {
-
             let target = new Date(input.replace('.0000000', '.000+00:00'));
             return target.toLocaleString('en-US', {hour12: false, day:'2-digit', month: '2-digit', hour: '2-digit', minute:'2-digit'})
-
-
         },
         msHeader(){
             return {
@@ -193,7 +193,6 @@ function startpage() {
                 duration: .5,
             }
             this.data.showNewEvent = false;
-            this.save();
             return this.loadCalendar();
         },
         async loadCalendar() {
@@ -204,7 +203,6 @@ function startpage() {
             try{
                 const {data} = await axios.get(baseURL, this.msHeader());
                 this.data.calendars = data.value;
-                console.log(data.value)
                 this.data.events = [];
                 data.value.forEach(calendar => {
                     axios.get(`${baseURL}/${calendar.id}/calendarView?StartDateTime=${start.toISOString()}&EndDateTime=${end.toISOString()}`, this.msHeader())
